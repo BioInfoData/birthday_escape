@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הגדרות המשחק</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .config-section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .config-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--color-text);
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            height: auto;
+            max-height: 200px;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            display: block;
+            border: 1px dashed #ccc;
+        }
+
+        .stage-item {
+            border: 1px solid #eee;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            background: #fafafa;
+        }
+
+        .hints-list textarea {
+            margin-bottom: 0.5rem;
+        }
+
+        .actions-bar {
+            position: sticky;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem 0;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-danger {
+            background-color: #ff6b6b;
+            color: white;
+        }
+
+        .file-input-wrapper {
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>הגדרות המשחק ⚙️</h1>
+        <p>כאן תוכלו לשנות את הטקסטים והתמונות של המשחק.</p>
+
+        <form id="config-form">
+            <!-- General Settings -->
+            <div class="config-section">
+                <div class="config-header">
+                    <h2>כללי</h2>
+                </div>
+                <div class="form-group">
+                    <label>כותרת הדפדפן (Title)</label>
+                    <input type="text" name="title" id="title">
+                </div>
+                <div class="form-group">
+                    <label>כותרת ראשית במשחק</label>
+                    <input type="text" name="gameTitle" id="gameTitle">
+                </div>
+            </div>
+
+            <!-- Welcome Page -->
+            <div class="config-section">
+                <div class="config-header">
+                    <h2>דף פתיחה (index.html)</h2>
+                </div>
+                <div class="form-group">
+                    <label>טקסט פתיחה</label>
+                    <textarea name="welcomeText" id="welcomeText"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>תמונת פתיחה</label>
+                    <img id="preview-welcomeImage" class="image-preview" src="">
+                    <div class="file-input-wrapper">
+                        <input type="file" accept="image/*" onchange="handleImageUpload(this, 'welcomeImage')">
+                        <input type="hidden" name="welcomeImage" id="welcomeImage">
+                    </div>
+                    <small>מומלץ תמונה רוחבית, עד 1MB.</small>
+                </div>
+            </div>
+
+            <!-- Stages -->
+            <div class="config-section">
+                <div class="config-header">
+                    <h2>שלבים</h2>
+                </div>
+                <div id="stages-container">
+                    <!-- Stages will be injected here -->
+                </div>
+                <div style="margin-top: 1rem; text-align: center;">
+                    <button type="button" class="btn btn-secondary" onclick="addStage()">+ הוסף שלב</button>
+                    <button type="button" class="btn btn-danger" onclick="removeStage()">- מחק שלב אחרון</button>
+                    <p style="font-size: 0.8rem; color: #888; margin-top: 0.5rem;">ניתן להוסיף עד 5 שלבים.</p>
+                </div>
+            </div>
+
+            <!-- Finish Page -->
+            <div class="config-section">
+                <div class="config-header">
+                    <h2>דף סיום (finish.html)</h2>
+                </div>
+                <div class="form-group">
+                    <label>כותרת סיום</label>
+                    <input type="text" name="finishTitle" id="finishTitle">
+                </div>
+                <div class="form-group">
+                    <label>גוף הודעת סיום</label>
+                    <textarea name="finishBody" id="finishBody"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>חשיפת הפרס</label>
+                    <textarea name="finalPrizeText" id="finalPrizeText"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>טקסט תחתון (פוטר)</label>
+                    <textarea name="finishFooter" id="finishFooter"></textarea>
+                </div>
+            </div>
+
+            <div class="actions-bar">
+                <button type="button" class="btn" style="background-color: #4CAF50;" onclick="saveConfig()">שמור
+                    שינויים</button>
+                <button type="button" class="btn btn-secondary" onclick="exportConfig()">ייצא קובץ</button>
+                <button type="button" class="btn btn-danger" onclick="resetToDefaults()">אפס לברירת מחדל</button>
+                <a href="index.html" class="btn btn-secondary">חזור למשחק</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Load Config Logic -->
+    <script src="assets/game-config.js"></script>
+    <script>
+        // Use the global GAME_CONFIG loaded from game-config.js
+        // It already handles localStorage logic!
+
+        // Populate Form
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFormFromConfig();
+        });
+
+        function loadFormFromConfig() {
+            // General
+            document.getElementById('title').value = GAME_CONFIG.title;
+            document.getElementById('gameTitle').value = GAME_CONFIG.gameTitle;
+
+            // Welcome
+            document.getElementById('welcomeText').value = GAME_CONFIG.welcomeText;
+            document.getElementById('welcomeImage').value = GAME_CONFIG.welcomeImage;
+            document.getElementById('preview-welcomeImage').src = GAME_CONFIG.welcomeImage;
+
+            // Finish
+            document.getElementById('finishTitle').value = GAME_CONFIG.finishTitle;
+            document.getElementById('finishBody').value = GAME_CONFIG.finishBody;
+            document.getElementById('finalPrizeText').value = GAME_CONFIG.finalPrizeText;
+            document.getElementById('finishFooter').value = GAME_CONFIG.finishFooter;
+
+            // Stages
+            renderStages();
+        }
+
+        function renderStages() {
+            const container = document.getElementById('stages-container');
+            container.innerHTML = '';
+
+            GAME_CONFIG.stages.forEach((stage, index) => {
+                const el = document.createElement('div');
+                el.className = 'stage-item';
+                el.innerHTML = `
+                    <h3>שלב ${stage.id}</h3>
+                    <div class="form-group">
+                        <label>כותרת השלב</label>
+                        <input type="text" value="${stage.title}" oninput="updateStage(${index}, 'title', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label>סיפור / הוראות</label>
+                        <textarea oninput="updateStage(${index}, 'story', this.value)">${stage.story}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>תמונה</label>
+                        <img id="preview-stage-${index}" class="image-preview" src="${stage.image}">
+                        <div class="file-input-wrapper">
+                            <input type="file" accept="image/*" onchange="handleImageUpload(this, 'stage-${index}', ${index})">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>קוד תשובה נכון</label>
+                        <input type="text" value="${stage.correctCode}" oninput="updateStage(${index}, 'correctCode', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label>רמזים (כל שורה רמז)</label>
+                        <textarea rows="3" oninput="updateStageHints(${index}, this.value)">${stage.hints.join('\n')}</textarea>
+                    </div>
+                `;
+                container.appendChild(el);
+            });
+        }
+
+        // Updates local config object in memory (not saved yet)
+        function updateStage(index, key, value) {
+            GAME_CONFIG.stages[index][key] = value;
+        }
+
+        function updateStageHints(index, text) {
+            GAME_CONFIG.stages[index].hints = text.split('\n').filter(line => line.trim() !== '');
+        }
+
+        function addStage() {
+            if (GAME_CONFIG.stages.length >= 5) {
+                alert('ניתן להגדיר מקסימום 5 שלבים במשחק זה.');
+                return;
+            }
+            const newId = GAME_CONFIG.stages.length + 1;
+            GAME_CONFIG.stages.push({
+                id: newId,
+                title: `חידה ${newId}`,
+                story: "",
+                image: "assets/img/stage1.jpg", // Default placeholder
+                correctCode: "",
+                hints: []
+            });
+            renderStages();
+        }
+
+        function removeStage() {
+            if (GAME_CONFIG.stages.length <= 1) {
+                alert('חייב להיות לפחות שלב אחד.');
+                return;
+            }
+            if (confirm('האם אתם בטוחים שברצונכם למחוק את השלב האחרון?')) {
+                GAME_CONFIG.stages.pop();
+                renderStages();
+            }
+        }
+
+        function handleImageUpload(input, targetId, stageIndex = null) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const result = e.target.result;
+
+                    // Update Preview
+                    if (stageIndex !== null) {
+                        document.getElementById(`preview-stage-${stageIndex}`).src = result;
+                        GAME_CONFIG.stages[stageIndex].image = result;
+                    } else {
+                        // General images like welcome
+                        document.getElementById(`preview-${targetId}`).src = result;
+                        document.getElementById(targetId).value = result;
+                        GAME_CONFIG[targetId] = result;
+                    }
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function saveConfig() {
+            // Gather top-level fields again just in case
+            GAME_CONFIG.title = document.getElementById('title').value;
+            GAME_CONFIG.gameTitle = document.getElementById('gameTitle').value;
+            GAME_CONFIG.welcomeText = document.getElementById('welcomeText').value;
+            GAME_CONFIG.welcomeImage = document.getElementById('welcomeImage').value; // already updated by handleImageUpload if changed
+
+            GAME_CONFIG.finishTitle = document.getElementById('finishTitle').value;
+            GAME_CONFIG.finishBody = document.getElementById('finishBody').value;
+            GAME_CONFIG.finalPrizeText = document.getElementById('finalPrizeText').value;
+            GAME_CONFIG.finishFooter = document.getElementById('finishFooter').value;
+
+            try {
+                const json = JSON.stringify(GAME_CONFIG);
+                localStorage.setItem('BIRTHDAY_GAME_CONFIG', json);
+                alert('ההגדרות נשמרו בהצלחה!');
+            } catch (e) {
+                alert('שגיאה בשמירה (אולי התמונות כבדות מדי?): ' + e.message);
+            }
+        }
+
+        function resetToDefaults() {
+            if (confirm('האם לאפס את כל ההגדרות לברירת המחדל? פעולה זו תמחק את כל השינויים.')) {
+                localStorage.removeItem('BIRTHDAY_GAME_CONFIG');
+                location.reload();
+            }
+        }
+
+        function exportConfig() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(GAME_CONFIG, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "game_config.json");
+            document.body.appendChild(downloadAnchorNode); // required for firefox
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+    </script>
+</body>
+
+</html>

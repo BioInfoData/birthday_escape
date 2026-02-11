@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>חדר בריחה - יום הולדת</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="card">
+            <h1 id="game-title">טוען...</h1>
+            <h2 id="game-subtitle" style="font-size: 1.2rem; color: var(--color-text-light); font-weight: normal;"></h2>
+
+            <div style="margin: 2rem 0;">
+                <img src="assets/img/stage1.jpg" alt="ברוכים הבאים" class="stage-image" id="welcome-image">
+            </div>
+
+            <p id="welcome-text">שלום! מוכנים לצאת למרדף אחר האוצר האבוד? עליכם לפתור חידות ולהתקדם בשלבים.</p>
+
+            <button id="start-btn" class="btn">התחל משחק</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 משחק יום הולדת. <a href="#" id="reset-btn" style="color: inherit;">אפס משחק</a> | <a href="setup.html"
+                style="color: inherit; opacity: 0.5;">הגדרות</a></p>
+    </footer>
+
+    <!-- Configuration first -->
+    <script src="assets/game-config.js"></script>
+    <!-- Main Logic -->
+    <script src="assets/app.js"></script>
+
+    <script>
+        // Custom script to handle fallback specific for index if needed, 
+        // or just rely mostly on app.js.
+        // We set a placeholder image for welcome if specific one isn't in config
+        document.getElementById('welcome-image').onerror = function () {
+            this.style.backgroundColor = '#e2f0cb';
+            this.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22200%22%20height%3D%22200%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20200%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%3E.text%7Bfill%3A%2398ddca%3Bfont-family%3A%27Rubik%27%2C%20sans-serif%3Bfont-size%3A30px%3Bfont-weight%3Abold%3Btext-anchor%3Amiddle%3B%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23fdfbf7%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20class%3D%22text%22%20dy%3D%22.3em%22%3E%F0%9F%8E%82%3C%2Ftext%3E%3C%2Fsvg%3E';
+        };
+    </script>
+</body>
+
+</html>

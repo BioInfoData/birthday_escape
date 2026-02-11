@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>גיבוי ידני - חדר בריחה</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Rubik', sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 10px;
+        }
+
+        .backup-stage {
+            border: 1px solid #000;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            page-break-inside: avoid;
+        }
+
+        .stage-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .box {
+            border: 2px dashed #999;
+            height: 50px;
+            width: 100%;
+            margin-top: 0px;
+        }
+
+        .hints {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .solution {
+            transform: rotate(180deg);
+            font-size: 0.8em;
+            color: #aaa;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+            }
+
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="no-print" style="background:#ffe; padding:10px; border:1px solid #ccc; margin-bottom:20px;">
+        <strong>דף גיבוי למקרה חירום</strong><br>
+        הדפיסו דף זה ושמרו אותו אצלכם. אם האינטרנט נופל או המכשיר נתקע, הילדים יכולים להמשיך ידנית.<br>
+        <button onclick="window.print()"
+            style="font-size:1.2em; padding:5px 20px; margin-top:10px; cursor:pointer;">הדפס כעת</button>
+    </div>
+
+    <h1>חידות יום הולדת (גיבוי)</h1>
+
+    <div id="backup-content"></div>
+
+    <script src="assets/game-config.js"></script>
+    <script>
+        const content = document.getElementById('backup-content');
+
+        GAME_CONFIG.stages.forEach(stage => {
+            const div = document.createElement('div');
+            div.className = 'backup-stage';
+
+            let hintsHtml = '';
+            if (stage.hints && stage.hints.length) {
+                hintsHtml = `<div class="hints">רמזים (למקרה הצורך): ${stage.hints.join(' | ')}</div>`;
+            }
+
+            div.innerHTML = `
+                <div class="stage-header">
+                    <span>${stage.title}</span>
+                    <span>קוד: ________</span>
+                </div>
+                <p>${stage.story}</p>
+                ${hintsHtml}
+                <div style="margin-top:10px;">
+                    <span style="font-size:0.8em;">פתרון (הפוך): </span>
+                    <span class="solution">${stage.correctCode}</span>
+                </div>
+            `;
+            content.appendChild(div);
+        });
+
+        // Add final prize
+        const finalDiv = document.createElement('div');
+        finalDiv.className = 'backup-stage';
+        finalDiv.style.borderColor = '#000';
+        finalDiv.style.borderWidth = '3px';
+        finalDiv.innerHTML = `
+            <h2>הפרס הגדול</h2>
+            <p>${GAME_CONFIG.finalPrizeText}</p>
+        `;
+        content.appendChild(finalDiv);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>שלב 1</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="progress-bar" style="margin-bottom: 1rem; color: var(--color-text-light); font-size: 0.9rem;">
+            <span id="progress-indicator">שלב 1 מתוך 5</span>
+            <a href="../index.html" style="float: left; color: inherit; text-decoration: none;">🏠 בית</a>
+        </div>
+
+        <div class="card">
+            <h1 id="stage-title">טוען חידה...</h1>
+
+            <img src="" alt="תמונה" class="stage-image" id="stage-image">
+
+            <p id="stage-story" style="font-size: 1.1rem;">...</p>
+
+            <div class="code-input-group">
+                <label for="code-input" class="visually-hidden">הכנס את הקוד</label>
+                <input type="tel" id="code-input" class="code-input" placeholder="הקוד הסודי" autocomplete="off"
+                    inputmode="numeric">
+                <button id="submit-code" class="btn">בדיקה</button>
+            </div>
+
+            <div id="feedback" class="feedback"></div>
+
+            <div class="hints-container" id="hints-container">
+                <button id="hint-btn" class="btn btn-secondary btn-small">צריך רמז?</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 משחק יום הולדת. <a href="#" id="reset-btn" style="color: inherit;">אפס משחק</a></p>
+    </footer>
+
+    <script src="../assets/game-config.js"></script>
+    <script src="../assets/app.js"></script>
+
+    <script>
+        // Fallback image handler
+        document.getElementById('stage-image').onerror = function () {
+            this.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22600%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20600%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%3E.text%7Bfill%3A%23aaaaaa%3Bfont-family%3A%27Rubik%27%2C%20sans-serif%3Bfont-size%3A24px%3Btext-anchor%3Amiddle%3B%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23eee%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20class%3D%22text%22%20dy%3D%22.3em%22%3Eplaceholder%3C%2Ftext%3E%3C%2Fsvg%3E';
+        };
+    </script>
+</body>
+
+</html>
