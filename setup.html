@@ -148,7 +148,7 @@
                 <div style="margin-top: 1rem; text-align: center;">
                     <button type="button" class="btn btn-secondary" onclick="addStage()">+ הוסף שלב</button>
                     <button type="button" class="btn btn-danger" onclick="removeStage()">- מחק שלב אחרון</button>
-                    <p style="font-size: 0.8rem; color: #888; margin-top: 0.5rem;">ניתן להוסיף עד 5 שלבים.</p>
+                    <p style="font-size: 0.8rem; color: #888; margin-top: 0.5rem;">ניתן להוסיף עד 6 שלבים.</p>
                 </div>
             </div>
 
@@ -263,8 +263,8 @@
         }
 
         function addStage() {
-            if (GAME_CONFIG.stages.length >= 5) {
-                alert('ניתן להגדיר מקסימום 5 שלבים במשחק זה.');
+            if (GAME_CONFIG.stages.length >= 6) {
+                alert('ניתן להגדיר מקסימום 6 שלבים במשחק זה.');
                 return;
             }
             const newId = GAME_CONFIG.stages.length + 1;

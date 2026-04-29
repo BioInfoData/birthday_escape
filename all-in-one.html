@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>חדר בריחה - כל השלבים</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 1200px;
+        }
+        #stages-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .stage-section {
+            border: 2px dashed var(--color-accent);
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .stage-section h2 {
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+        .stage-section p {
+            flex-grow: 1;
+            font-size: 0.95rem;
+        }
+        .stage-image {
+            max-height: 120px;
+            object-fit: cover;
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        .code-input-group {
+            width: 100%;
+        }
+        @media (max-width: 900px) {
+            #stages-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 600px) {
+            #stages-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        .all-in-one-submit {
+            margin-top: var(--spacing-lg);
+            padding: 16px;
+            font-size: 1.3rem;
+        }
+        #global-feedback {
+            margin-top: var(--spacing-sm);
+            font-size: 1.2rem;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="card">
+            <h1 id="game-title">חדר בריחה - כל השלבים</h1>
+            <p style="text-align: center; color: var(--color-text-light); margin-bottom: 2rem;">פתרו את כל החידות והזינו את הקודים למטה כדי לסיים את המשחק.</p>
+
+            <div id="stages-container">
+                <!-- Stages will be injected here by JS -->
+            </div>
+
+            <div id="global-feedback" class="feedback"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 משחק יום הולדת. <a href="index.html" style="color: inherit;">חזרה להתחלה</a> | <a href="setup.html" style="color: inherit; opacity: 0.5;">הגדרות</a></p>
+    </footer>
+
+    <!-- Configuration -->
+    <script src="assets/game-config.js"></script>
+    
+    <!-- All-in-one Logic -->
+    <script>
+        // Execute immediately since we are at the end of the body
+        const container = document.getElementById('stages-container');
+        const globalFeedback = document.getElementById('global-feedback');
+        let solvedCount = 0;
+
+        try {
+            if (typeof GAME_CONFIG === 'undefined') {
+                container.innerHTML = '<p style="color:red; font-weight:bold;">שגיאה: הגדרות המשחק לא נטענו (GAME_CONFIG חסר).</p>';
+            } else if (!GAME_CONFIG.stages || !Array.isArray(GAME_CONFIG.stages)) {
+                container.innerHTML = '<p style="color:red; font-weight:bold;">שגיאה: אין שלבים בהגדרות המשחק. ייתכן שיש בעיה בשמירה מוקדמת. <br><a href="setup.html">עברו לעמוד ההגדרות ואפסו לברירת מחדל.</a></p>';
+            } else if (GAME_CONFIG.stages.length === 0) {
+                container.innerHTML = '<p style="color:red; font-weight:bold;">אין שלבים להצגה. <a href="setup.html">הוסיפו שלבים בעמוד ההגדרות.</a></p>';
+            } else {
+                // Render all stages
+                GAME_CONFIG.stages.forEach((stage, index) => {
+                    const section = document.createElement('div');
+                    section.className = 'stage-section';
+                    section.innerHTML = `
+                        <h2>${stage.title}</h2>
+                        <p>${stage.story}</p>
+                        <img src="${stage.image}" alt="${stage.title}" class="stage-image" onerror="this.style.display='none'">
+                        
+                        <div class="code-input-group" style="display: flex; flex-direction: column; gap: 10px; align-items: center; width: 100%; margin: 1rem auto 0;">
+                            <label for="code-${stage.id}" class="visually-hidden">קוד לשלב ${stage.id}</label>
+                            <input type="text" id="code-${stage.id}" class="code-input" placeholder="הזינו קוד כאן..." autocomplete="off" style="margin: 0; width: 100%; text-align: center; box-sizing: border-box;">
+                            <button id="btn-${stage.id}" class="btn btn-small" style="margin: 0; width: 100%; padding: 12px 24px; box-sizing: border-box;">בדוק</button>
+                        </div>
+                        <div id="feedback-${stage.id}" class="feedback"></div>
+                    `;
+                    container.appendChild(section);
+
+                    // Add individual event listener
+                    const input = document.getElementById(`code-${stage.id}`);
+                    const btn = document.getElementById(`btn-${stage.id}`);
+                    const feedback = document.getElementById(`feedback-${stage.id}`);
+
+                    const validateStage = () => {
+                        const val = input.value.trim();
+                        if (val === stage.correctCode) {
+                            feedback.textContent = 'תשובה נכונה!';
+                            feedback.className = 'feedback success';
+                            input.style.borderColor = 'var(--color-success)';
+                            input.disabled = true;
+                            btn.disabled = true;
+                            btn.style.backgroundColor = 'var(--color-success)';
+                            btn.textContent = '✔';
+                            
+                            solvedCount++;
+                            checkAllSolved();
+                        } else {
+                            if (val === '') {
+                                feedback.textContent = 'חסר קוד';
+                            } else {
+                                feedback.textContent = 'קוד שגוי, נסו שוב';
+                            }
+                            feedback.className = 'feedback error';
+                            input.style.borderColor = 'var(--color-error)';
+                        }
+                    };
+
+                    btn.addEventListener('click', validateStage);
+                    input.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') validateStage();
+                    });
+                });
+            }
+        } catch (error) {
+            container.innerHTML = '<p style="color:red; font-weight:bold;">שגיאה בלתי צפויה: ' + error.message + '</p>';
+        }
+
+        function checkAllSolved() {
+            if (solvedCount === GAME_CONFIG.stages.length) {
+                globalFeedback.textContent = 'כל הכבוד! סיימתם את כל השלבים בהצלחה.';
+                globalFeedback.className = 'feedback success';
+                
+                // Simple confetti
+                startConfetti();
+
+                // Redirect to finish page after a short delay
+                setTimeout(() => {
+                    window.location.href = 'finish.html';
+                }, 2500);
+            }
+        }
+        
+        function startConfetti() {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            const count = 100;
+            const colors = ['#ffb7b2', '#98ddca', '#8ac6d1', '#e2f0cb'];
+
+            for (let i = 0; i < count; i++) {
+                const conf = document.createElement('div');
+                conf.style.position = 'fixed';
+                conf.style.zIndex = '9999';
+                conf.style.left = Math.random() * 100 + 'vw';
+                conf.style.top = '-10px';
+                conf.style.width = '10px';
+                conf.style.height = '10px';
+                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.transition = `top ${1 + Math.random() * 2}s linear, transform 2s ease-in-out`;
+                conf.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+                document.body.appendChild(conf);
+
+                setTimeout(() => {
+                    conf.style.top = '110vh';
+                    conf.style.transform = `rotate(${Math.random() * 360 + 360}deg)`;
+                }, 100);
+
+                setTimeout(() => {
+                    conf.remove();
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+
+</html>
