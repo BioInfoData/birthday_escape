@@ -5,87 +5,62 @@
  */
 
 const DEFAULT_GAME_CONFIG = {
-    // General
-    title: "יום הולדת שמח!", // Browser Title
-    gameTitle: "חדר בריחה - יום הולדת", // Main Heading
-
-    // Welcome Page (index.html)
-    welcomeImage: "assets/img/stage1.jpg",
-    welcomeText: "שלום! מוכנים לצאת למרדף אחר האוצר האבוד? עליכם לפתור חידות ולהתקדם בשלבים.",
-
-    // Final Page (finish.html)
-    finishTitle: "כל הכבוד!!! 🎉",
-    finishBody: "צלחתם את כל המכשולים, פתרתם את כל החידות והוכחתם שאתם אלופים אמיתיים!",
-    finalPrizeText: "כל הכבוד! סיימתם את כל האתגרים! \nהפרס מחכה לכם בארון המטבח העליון 😉",
-    finishFooter: "מקווים שנהניתם! יום הולדת שמח! 🥳",
-
-    // Configuration for each stage
-    stages: [
+    "title": "הצופן הגנטי",
+    "gameTitle": "בואו נפתור ביחד את הצופן הגנטי!!! מוכנות לאתגר?",
+    "welcomeImage": "assets/img/custom_welcome.webp",
+    "welcomeText": "",
+    "finishTitle": "כל הכבוד!!! 🎉",
+    "finishBody": "",
+    "finalPrizeText": "כל הכבוד! \nפיצחתן את הצופן הגנטי!\nאתן מדעניות אמיתיות!!!",
+    "finishFooter": "",
+    "stages": [
         {
-            id: 1,
-            title: "חידה 1: ההתחלה",
-            story: "ברוכים הבאים! כדי להתחיל את המסע, עליכם למצוא את המספר המסתתר בתמונה.",
-            image: "assets/img/stage1.jpg", // Fixed path to be relative to root if needed, or handled by page
-            correctCode: "1234", // Simple numeric code
-            hints: [
-                "נסו לספור את הבלונים בתמונה...",
-                "המספר הוא 1234 (סתם, זה דוגמה)"
-            ]
+            "id": 1,
+            "title": "קבוצה 1",
+            "story": "",
+            "image": "assets/img/custom_stage_1.jpeg",
+            "correctCode": "עיניים בצבע כחול, שיער שחור, גובה מטר חמישים",
+            "hints": []
         },
         {
-            id: 2,
-            title: "חידה 2: היער הקסום",
-            story: "הגעתם ליער הקסום. פיה קטנה לוחשת לכם שאתם צריכים לפתור חידת חשבון פשוטה.",
-            image: "assets/img/stage2.jpg",
-            correctCode: "0505",
-            hints: [
-                "כמה אצבעות יש לכם ביד אחת?",
-                "פעמיים חמש..."
-            ]
+            "id": 2,
+            "title": "קבוצה 2",
+            "story": "",
+            "image": "assets/img/custom_stage_2.webp",
+            "correctCode": "עיניים בצבע חום, שיער מתולתל, גובה מטר שישים",
+            "hints": []
         },
         {
-            id: 3,
-            title: "חידה 3: המפתח האבוד",
-            story: "מפתח הזהב אבד בים. הצוללן צריך את הקוד לפתיחת התיבה.",
-            image: "assets/img/stage3.jpg",
-            correctCode: "777",
-            hints: [
-                "מספר המזל...",
-                "שלוש פעמים שבע"
-            ]
+            "id": 3,
+            "title": "קבוצה 3",
+            "story": "",
+            "image": "assets/img/custom_stage_3.png",
+            "correctCode": "עיניים בצבע ירוק, שיער בלונדיני, גובה מטר חמישים",
+            "hints": []
         },
         {
-            id: 4,
-            title: "חידה 4: המערה החשוכה",
-            story: "הגעתם למערה חשוכה. מצאו את הקוד כדי להדליק את הלפיד.",
-            image: "assets/img/stage4.jpg",
-            correctCode: "2024",
-            hints: [
-                "השנה הנוכחית...",
-                "2024"
-            ]
+            "id": 4,
+            "title": "קבוצה 4",
+            "story": "",
+            "image": "assets/img/custom_stage_4.jpeg",
+            "correctCode": "עיניים בצבע חום, שיער חלק, גובה מטר חמישים",
+            "hints": []
         },
         {
-            id: 5,
-            title: "חידה 5: תיבת האוצר",
-            story: "מצאתם את תיבת האוצר! הזינו את הקוד כדי לפתוח אותה.",
-            image: "assets/img/stage5.jpg",
-            correctCode: "1111",
-            hints: [
-                "המספר הראשון חוזר 4 פעמים...",
-                "1111"
-            ]
+            "id": 5,
+            "title": "קבוצה 5",
+            "story": "",
+            "image": "assets/img/custom_stage_5.jpeg",
+            "correctCode": "עיניים בצבע ירוק, שיער חום, גובה מטר שישים",
+            "hints": []
         },
         {
-            id: 6,
-            title: "חידה 6: האתגר הסופי",
-            story: "האתגר האחרון עומד בפניכם. פתרו את החידה כדי לסיים את המשחק!",
-            image: "assets/img/stage6.jpg",
-            correctCode: "9999",
-            hints: [
-                "המספר האחרון לפני 10000...",
-                "9999"
-            ]
+            "id": 6,
+            "title": "קבוצה 6",
+            "story": "",
+            "image": "assets/img/custom_stage_6.jpeg",
+            "correctCode": "עיניים בצבע כחול, שיער חלק, גובה מטר שישים",
+            "hints": []
         }
     ]
 };
